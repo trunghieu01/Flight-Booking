@@ -1,5 +1,0 @@
-package com.spring.jwt_jpa.repository;
-
-public class VeRepository {
-
-}
