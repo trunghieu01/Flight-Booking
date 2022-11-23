@@ -1,0 +1,47 @@
+version: '3.7'    
+services:
+    #service 1: definition of mysql database
+    db:
+      image: mysql:latest
+      container_name: mysql-redis 
+      environment:
+        - MYSQL_ROOT_PASSWORD=admin
+      ports:
+        - "3306:3306"
+      restart: always
+    
+    redis:
+      restart: always
+      image: redis:4.0
+      container_name: redis
+      ports:
+        - "6379:6000"
+      volumes:
+      - ./redis:/data
+      
+    #service 3: definition of your spring-boot app 
+    service:                        #it is just a name, which will be used only in this file.
+      image: myimage               #name of the image after dockerfile executes
+      container_name: mycontainer  #name of the container created from docker image
+      build:
+        context: .                          #docker file path (. means root directory)
+        dockerfile: Dockerfile              #docker file name
+      links:
+      - redis
+      ports:
+        - "8080:8080"                       #docker containter port with your os port
+      restart: always
+        
+      depends_on:                           #define dependencies of this app
+        - db                                #dependency name (which is defined with this name 'db' in this file earlier)
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql-redis:3306/springjwt?createDatabaseIfNotExist=true
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: admin    
+      
+    
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local

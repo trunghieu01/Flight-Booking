@@ -1,0 +1,22 @@
+package com.spring.jwt_jpa.entity;
+
+import javax.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "khachhang")
+public class KhachHang {
+	@Id
+    @Column(name="maKH", columnDefinition = "varchar(16)")
+	private String maKH;
+	
+    @Column(name="pass", columnDefinition = "varchar(50)")
+	private String pass;
+    
+    @Column(name="tenKH", columnDefinition = "varchar(50)")
+	private String tenKH;
+}
